@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>瓶子矩阵图片制作工具</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    	<link rel="apple-touch-icon" href="/neruthes.png">
+    	<link rel="shortcut icon" href="/neruthes.png">
+        <style media="screen">
+        * {
+            text-rendering: optimizeLegibility;
+             box-sizing: border-box;
+        }
+        html, body {
+            font-family: -apple-system, 'SF UI Text', 'Segoe UI', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif, 'PingFang SC', '.PingFang SC', 'Noto Sans CJK SC', 'Source Han Sans CN', 'Microsoft YaHei', 'Microsoft YaHei UI';
+            font-size: 16px;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background: #F0F0F0;
+        }
+        .cont {
+        }
+        .cont-inner {
+            max-width: 504px;
+            padding: 1px 15px;
+            margin: 0 auto;
+        }
+        .grand-header {
+            background: #FFF;
+            padding: 20px 0;
+        }
+        .grand-body {
+            background: #FFF;
+            padding: 0 0 40px;
+        }
+        .grand-footer {
+            padding: 40px 0;
+        }
+        .body-canvas {
+            min-height: 400px;
+        }
+        </style>
+        <script type="text/javascript">
+        // Variables
+        window.rawUserInputMatrixTitle = undefined;
+        window.rawUserInputBottlesList = undefined;
+        // Managing local storage
+        window.app = {
+        };
+        app.lsnamespace = 'xyz.neruthes.bottlematrix.v1'
+        app.lsman = {
+            getLocalStorageEntryName: function (varname) {
+                return [app.lsnamespace, document.body.getAttribute('data-app-page'), varname].join(':');
+            },
+            load: function (varname) {
+                window[varname] = localStorage[app.lsman.getLocalStorageEntryName(varname)];
+                return window[varname];
+            },
+            save: function (varname) {
+                localStorage[app.lsman.getLocalStorageEntryName(varname)] = window[varname];
+                return window[varname];
+            }
+        };
+        </script>
+        <script type="text/javascript">
+        app.renderBottleItem = function (itemName) {
+            return `<div class="btlitem">
+                <div class="btlitem--img-container">
+                    <img src="bottle.jpg">
+                </div>
+                <div class="btlitem--name">${itemName}</div>
+            </div>`
+        };
+        </script>
+        <style media="screen">
+        .inputText {
+            font-family: inherit;
+            font-size: 16px;
+            border: 1px solid #AAA;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 0 0 20px;
+            resize: none;
+        }
+        button {
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.7;
+        }
+        </style>
+        <style media="screen">
+        #js-bodyCanvas-1 {
+            font-size: 0px;
+        }
+        .btlitem {
+            text-align: center;
+            float: left;
+            width: calc(100% / 6);
+            padding: 0 0 20px;
+        }
+        .btlitem img {
+            display: block;
+            width: 58%;
+            margin: 0 auto;
+        }
+        .btlitem--name {
+            font-size: 13px;
+            line-height: 15px;
+            height: 50px;
+            padding: 10px 0 0;
+        }
+        </style>
+    </head>
+    <body data-app-page="index">
+        <div class="cont">
+            <div class="grand-header">
+                <div class="cont-inner">
+                    <h1>瓶子矩阵图片制作工具</h1>
+                </div>
+            </div>
+            <div class="grand-body">
+                <div class="cont-inner">
+                    <div class="body-controls">
+                        <input class="inputText" id="js-INPUT-title" type="text" name="" value="" placeholder="在此输入标题">
+                        <script type="text/javascript">
+                        app.lsman.load('rawUserInputMatrixTitle');
+                        if (rawUserInputMatrixTitle === undefined) { // No cache
+                            rawUserInputMatrixTitle = '在此输入标题';
+                            app.lsman.save('rawUserInputMatrixTitle');
+                        };
+                        document.querySelector('#js-INPUT-title').value = rawUserInputMatrixTitle;
+                        document.querySelector('#js-INPUT-title').addEventListener('input', function () {
+                            rawUserInputMatrixTitle = document.querySelector('#js-INPUT-title').value;
+                            app.lsman.save('rawUserInputMatrixTitle');
+                        });
+                        </script>
+
+                        <textarea class="inputText" id="js-TA-bottles" rows="8" cols="80" placeholder="在此输入瓶子列表，每行一个"></textarea>
+                        <script type="text/javascript">
+                        app.lsman.load('rawUserInputBottlesList');
+                        if (rawUserInputBottlesList === undefined) { // No cache
+                            rawUserInputBottlesList = '瓶子1号\n瓶子2号\n瓶子3号\n在此输入瓶子列表，每行一个';
+                            app.lsman.save('rawUserInputBottlesList');
+                        };
+                        document.querySelector('#js-TA-bottles').value = rawUserInputBottlesList;
+                        document.querySelector('#js-TA-bottles').addEventListener('input', function () {
+                            rawUserInputBottlesList = document.querySelector('#js-TA-bottles').value;
+                            app.lsman.save('rawUserInputBottlesList');
+                        });
+                        </script>
+
+                        <div class="">
+                            <button type="button" id="js-BTN-generate" style="
+                                font-size: 18px;
+                                color: #FFF;
+                                line-height: 30px;
+                                background: #17F;
+                                border: none;
+                                border-radius: 4px;
+                                outline: none;
+                                display: block;
+                                width: 240px;
+                                padding: 8px 0;
+                                margin: 0 auto;
+                            ">生成</button>
+                        </div>
+                    </div>
+                    <div class="body-canvas" style="padding: 50px 0;">
+                        <style media="screen">
+                        #js-bodyCanvas-1 {
+                            /* position: fixed; */
+                            /* left: 9999px; */
+                            /* top: 9999px; */
+                        }
+                        </style>
+                        <div id="js-bodyCanvas-1"></div>
+                        <div id="js-bodyCanvas-2"></div>
+                    </div>
+                    <script type="text/javascript">
+                    var generate = function (e) {
+                        var bottles;
+                        bottles = rawUserInputBottlesList.trim().split('\n').filter(x => x !== '');
+                        document.querySelector('#js-TA-bottles').value = bottles.join('\n');
+                        rawUserInputBottlesList = document.querySelector('#js-TA-bottles').value;
+                        app.lsman.save('rawUserInputBottlesList');
+                        if (bottles.length < 2) {
+                            alert('必须有至少 2 个瓶子');
+                            document.querySelector('#js-TA-bottles').value += '\n瓶子1\n瓶子2\n瓶子3';
+                            rawUserInputBottlesList = document.querySelector('#js-TA-bottles').value;
+                            console.log(rawUserInputBottlesList);
+                            app.lsman.save('rawUserInputBottlesList');
+                            bottles = rawUserInputBottlesList.trim().split('\n').filter(x => x !== '');
+                            // return 1;
+                        };
+                        var titleHtml = `<h2 style="font-size: 30px; text-align: center;">${rawUserInputMatrixTitle || '无标题'}</h2>`;
+                        var bottlesHtml = bottles.map(itemName => app.renderBottleItem(itemName)).join('') + '<div style="clear: both;"></div>';
+                        var imageFooterHtml = `<div style="font-size: 14px; color: #999; text-align: center;">生成工具： https://neruthes.xyz/bottle-matrix/</div>`;
+                        document.querySelector('#js-bodyCanvas-1').innerHTML = titleHtml + bottlesHtml + imageFooterHtml;
+                    };
+                    document.querySelector('#js-BTN-generate').addEventListener('click', generate);
+                    generate();
+                    </script>
+                </div>
+            </div>
+            <div class="grand-footer">
+                <div class="cont-inner">
+                    <p>
+                        Copyright &copy; 2020<script>
+                            document.write((new Date()).getFullYear() === 2020 ? '' : '-' + (new Date()).getFullYear())
+                        </script> <a href="https://neruthes.xyz/">Neruthes</a> (0xAFB3373F5200DF38).
+                    </p>
+                    <p><a href="https://github.com/neruthes/bottle-matrix">Source code</a> is available under <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a> license.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
