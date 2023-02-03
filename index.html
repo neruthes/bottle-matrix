@@ -199,7 +199,7 @@
                         };
                         var titleHtml = `<h2 style="font-size: 30px; text-align: center;">${rawUserInputMatrixTitle || '无标题'}</h2>`;
                         var bottlesHtml = bottles.map(itemName => app.renderBottleItem(itemName)).join('') + '<div style="clear: both;"></div>';
-                        var imageFooterHtml = `<div style="font-size: 14px; color: #999; text-align: center;">瓶子矩阵生成工具： <span style="text-decoration: underline;">https://neruthes.xyz/bottle-matrix/</span></div>`;
+                        var imageFooterHtml = `<div style="font-size: 14px; color: #999; text-align: center;">瓶子矩阵生成工具： <span style="text-decoration: underline;">https://neruthes.github.io/bottle-matrix/</span></div>`;
                         document.querySelector('#js-bodyCanvas-1').innerHTML = titleHtml + bottlesHtml + imageFooterHtml;
                     };
                     document.querySelector('#js-BTN-generate').addEventListener('click', generate);
